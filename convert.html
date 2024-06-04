@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Parse .fold File</title>
+    <title>Convert .fold file</title>
 </head>
 
 <body>
@@ -31,10 +31,10 @@
                         const blob = new Blob([JSON.stringify(facesVertices, null, 2)], { type: 'application/json' });
                         const url = URL.createObjectURL(blob);
 
-                        // Get the original file name and append "_processed"
+                        // Get the original file name and append "_faces-added"
                         const originalFileName = file.name;
                         const fileNameParts = originalFileName.split('.');
-                        const newFileName = fileNameParts[0] + '_processed.' + fileNameParts.slice(1).join('.');
+                        const newFileName = fileNameParts[0] + '_faces-added.' + fileNameParts.slice(1).join('.');
 
                         // Create and configure the download link
                         const downloadLink = document.getElementById('downloadLink');
