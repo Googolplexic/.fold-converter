@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parse .fold File</title>
+</head>
+
+<body>
+    <h1>Parse .fold File</h1>
+    <input type="file" id="fileInput">
+    <a id="downloadLink" style="display:none;">Download Processed File</a>
+
+    <!-- Correctly include the FOLD library -->
+    <script src="https://edemaine.github.io/fold/dist/fold.js"></script>
+    <script>
+        document.getElementById('fileInput').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            FOLD = require('fold');
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    try {
+                        // Parse the file contents as JSON
+                        const jsonData = JSON.parse(e.target.result);
+
+                        // Use FOLD to convert edges_vertices to faces_vertices
+                        const facesVertices = FOLD.convert.edges_vertices_to_faces_vertices(jsonData);
+
+                        // Create a Blob from the processed JSON data
+                        const blob = new Blob([JSON.stringify(facesVertices, null, 2)], { type: 'application/json' });
+                        const url = URL.createObjectURL(blob);
+
+                        // Get the original file name and append "_processed"
+                        const originalFileName = file.name;
+                        const fileNameParts = originalFileName.split('.');
+                        const newFileName = fileNameParts[0] + '_processed.' + fileNameParts.slice(1).join('.');
+
+                        // Create and configure the download link
+                        const downloadLink = document.getElementById('downloadLink');
+                        downloadLink.href = url;
+                        downloadLink.download = newFileName;
+                        downloadLink.style.display = 'block';
+                        downloadLink.textContent = 'Download Processed File';
+                        downloadLink.click();  // Automatically click the link to start the download
+                    } catch (error) {
+                        console.error('Error parsing JSON: ', error);
+                    }
+                };
+                reader.readAsText(file); // Read the file as text
+            }
+        });
+    </script>
+</body>
+
+</html>
