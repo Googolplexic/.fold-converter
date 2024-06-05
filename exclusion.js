@@ -21,6 +21,7 @@ function excludeVertex(jsonData, vertexToRemove, edge1, edge2) {
     shiftVertices(jsonData, vertexToRemove);
 }
 
+// Assuming unrotated rectangle/square
 function isCorner(jsonData, targetVertex, edge1, edge2, elipson) {
     if (!jsonData.edges_assignment[edge1] == 'B' || !jsonData.edges_assignment[edge2] == 'B') {
         return false;
@@ -30,17 +31,15 @@ function isCorner(jsonData, targetVertex, edge1, edge2, elipson) {
     let minValue = [targetVertexX, targetVertexY];
     let maxValue = [targetVertexX, targetVertexY];
     for (let vertex of jsonData.vertices_coords) {
-        if (vertex[0] > maxValue[0]) { maxValue[0] = vertex[0]; }
-        if (vertex[1] > maxValue[1]) { maxValue[1] = vertex[1]; }
-        if (vertex[0] < minValue[0]) { minValue[0] = vertex[0]; }
-        if (vertex[1] < minValue[1]) { minValue[1] = vertex[1]; }
+        minValue[0] = Math.min(minValue[0], vertex[0]);
+        minValue[1] = Math.min(minValue[1], vertex[1]);
+        maxValue[0] = Math.max(maxValue[0], vertex[0]);
+        maxValue[1] = Math.max(maxValue[1], vertex[1]);
     }
-    if (targetVertexX + elipson > maxValue[0] && targetVertexY + elipson > maxValue[1]
+    return (targetVertexX + elipson > maxValue[0] && targetVertexY + elipson > maxValue[1]
         || targetVertexX + elipson > maxValue[0] && targetVertexY - elipson < minValue[1]
         || targetVertexX - elipson < minValue[0] && targetVertexY + elipson > maxValue[1]
-        || targetVertexX - elipson < minValue[0] && targetVertexY - elipson < minValue[1]
-    ) { return true; }
-    else { return false; }
+        || targetVertexX - elipson < minValue[0] && targetVertexY - elipson < minValue[1]);
 }
 
 function shouldBeRemoved(jsonData, vertexToRemove, edge1, edge2) {
@@ -52,7 +51,7 @@ function shouldBeRemoved(jsonData, vertexToRemove, edge1, edge2) {
         console.log("Edges are different orientation, cannot exclude vertex.\n")
         return false;
     }
-    console.log("Removing vertex\n");
+    console.log("Removing vertex" + vertexToRemove + "\n");
     return true;
 }
 
