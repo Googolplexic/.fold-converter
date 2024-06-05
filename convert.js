@@ -9,9 +9,11 @@ document.getElementById('fileInput').addEventListener('change', function (event)
                 const jsonData = JSON.parse(e.target.result);
 
                 // Use FOLD to add faces_vertices
-                FOLD.convert.edges_vertices_to_faces_vertices(jsonData);
+                findExclusions(jsonData);
+                // FOLD.convert.edges_vertices_to_faces_vertices(jsonData);
                 const theData = document.getElementById('data');
-                theData.textContent = jsonData["vertices_coords"][2];
+
+                theData.textContent = JSON.stringify(jsonData);
                 // Create a Blob from the processed JSON data
                 const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json' });
                 const url = URL.createObjectURL(blob);
