@@ -10,7 +10,7 @@ document.getElementById('fileInput').addEventListener('change', function (event)
 
                 // Use FOLD to add faces_vertices
                 findExclusions(jsonData);
-                // FOLD.convert.edges_vertices_to_faces_vertices(jsonData);
+                FOLD.convert.edges_vertices_to_faces_vertices(jsonData);
                 const theData = document.getElementById('data');
 
                 theData.textContent = JSON.stringify(jsonData);
