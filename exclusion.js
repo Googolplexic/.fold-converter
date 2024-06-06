@@ -42,15 +42,45 @@ function isCorner(jsonData, targetVertex, edge1, edge2, elipson) {
         || targetVertexX - elipson < minValue[0] && targetVertexY - elipson < minValue[1]);
 }
 
+function isOnEdge(jsonData, targetVertex, elipson) {
+    const targetVertexX = jsonData.vertices_coords[targetVertex][0];
+    const targetVertexY = jsonData.vertices_coords[targetVertex][1];
+    let minValue = [targetVertexX, targetVertexY];
+    let maxValue = [targetVertexX, targetVertexY];
+    for (let vertex of jsonData.vertices_coords) {
+        minValue[0] = Math.min(minValue[0], vertex[0]);
+        minValue[1] = Math.min(minValue[1], vertex[1]);
+        maxValue[0] = Math.max(maxValue[0], vertex[0]);
+        maxValue[1] = Math.max(maxValue[1], vertex[1]);
+    }
+    return (targetVertexX + elipson > maxValue[0] || targetVertexY + elipson > maxValue[1]
+        || targetVertexX - elipson < minValue[0] || targetVertexY - elipson < minValue[1]);
+}
+
+function edgesNotParallel(jsonData, edge1, edge2, elipson) {
+    const XchangeInEdge1 = jsonData.vertices_coords[jsonData.edges_vertices[edge1][0]][0] - jsonData.vertices_coords[jsonData.edges_vertices[edge1][1]][0];
+    const YchangeInEdge1 = jsonData.vertices_coords[jsonData.edges_vertices[edge1][0]][1] - jsonData.vertices_coords[jsonData.edges_vertices[edge1][1]][1];
+    const XchangeInEdge2 = jsonData.vertices_coords[jsonData.edges_vertices[edge2][0]][0] - jsonData.vertices_coords[jsonData.edges_vertices[edge2][1]][0];
+    const YchangeInEdge2 = jsonData.vertices_coords[jsonData.edges_vertices[edge2][0]][1] - jsonData.vertices_coords[jsonData.edges_vertices[edge2][1]][1];
+    return (Math.abs(YchangeInEdge1 / XchangeInEdge1 - YchangeInEdge2 / XchangeInEdge2) > elipson);
+}
+
 function shouldBeRemoved(jsonData, vertexToRemove, edge1, edge2) {
     if (isCorner(jsonData, vertexToRemove, edge1, edge2, 0.001)) {
-        console.log("Vertex is a corner, will ignore.\n")
+        console.log("Vertex is a corner, ignoring vertex.\n")
         return false;
     }
+
     if (jsonData.edges_assignment[edge1] != jsonData.edges_assignment[edge2]) {
-        console.log("Edges are different orientation, cannot exclude vertex.\n")
+        console.log("Edges are different orientation, ignoring.\n")
         return false;
     }
+
+    if (edgesNotParallel(jsonData, edge1, edge2, 0.001)) {
+        console.log("Edges are not parallel, ignoring vertex.\n")
+        return false;
+    }
+
     console.log("Removing vertex" + vertexToRemove + "\n");
     return true;
 }
@@ -65,8 +95,7 @@ function findExclusions(jsonData) {
         let edge2 = -1;
         for (let j = 0; j < numEdges; j++) {
             if (jsonData.edges_vertices[j].includes(i)) {
-                if (++vertexDegree > 2) { break; }
-                (edge1 == -1) ? edge1 = j : edge2 = j;
+                if (++vertexDegree <= 2) { (edge1 == -1) ? edge1 = j : edge2 = j; }
             }
         }
         if (vertexDegree == 2 && shouldBeRemoved(jsonData, i, edge1, edge2)) {
@@ -75,5 +104,10 @@ function findExclusions(jsonData) {
             i--;
             numVertices--;
         }
+        if (vertexDegree % 2 == 1 && !isOnEdge(jsonData, i, 0.001)) {
+            console.log("Maekawa's theorem broken: a vertex is not flat-foldable.\n");
+            console.log("The program will still perform all exclusions.\n");
+        }
+
     }
 }
