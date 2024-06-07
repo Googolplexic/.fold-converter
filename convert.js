@@ -6,16 +6,16 @@ document.getElementById('fileInput').addEventListener('change', function (event)
         reader.onload = function (e) {
             try {
                 // Parse the file contents as JSON
-                const jsonData = JSON.parse(e.target.result);
+                const fold = JSON.parse(e.target.result);
 
                 // Use FOLD to add faces_vertices
-                findExclusions(jsonData);
-                FOLD.convert.edges_vertices_to_faces_vertices(jsonData);
+                findExclusions(fold);
+                FOLD.convert.edges_vertices_to_faces_vertices(fold);
                 const theData = document.getElementById('data');
 
-                theData.textContent = JSON.stringify(jsonData);
+                theData.textContent = JSON.stringify(fold);
                 // Create a Blob from the processed JSON data
-                const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json' });
+                const blob = new Blob([JSON.stringify(fold, null, 2)], { type: 'application/json' });
                 const url = URL.createObjectURL(blob);
 
                 // Get the original file name and append "_faces-added"
