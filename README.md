@@ -6,7 +6,7 @@ To do this, there is a script to remove/exclude extra vertices, similar to the "
 Also, the console will log which vertices in the fold fail Maekawa's theorem as a light flat-foldability check (Might add more in the future)
 
 ![Image](https://github.com/Googolplexic/.fold-file_face_converter/assets/52732344/73872b69-8562-4537-a082-58bd77d50c56)
-Vertex exclusion example with a crease pattern of a chess rook: before and after (the right is compatible with [origamisimulator.com](https://origamisimulator.com) while the left is not)
+Vertex exclusion example with a crease pattern of a chess rook (See sample): before and after (the right is compatible with [origamisimulator.com](https://origamisimulator.com) while the left is not)
 
 ## Acknowledgements
 
