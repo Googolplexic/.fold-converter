@@ -27,7 +27,7 @@ document.getElementById('fileInput').addEventListener('change', function (event)
                 downloadLink.href = url;
                 downloadLink.download = newFileName;
                 downloadLink.style.display = 'block';
-                downloadLink.textContent = 'Download Processed File';
+                downloadLink.textContent = 'Download Converted File';
                 downloadLink.click();  // Automatically click the link to start the download
 
             } catch (error) {
