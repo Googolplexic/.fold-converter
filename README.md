@@ -1,12 +1,12 @@
 # .fold file face_vertices converter and vertex excluder
 ## Description
 
-A simple HTML page that calls the FOLD API to add the faces_vertices properties. Useful for exporting a .fold file from software such as [Oriedita](https://github.com/oriedita/oriedita) to view on https://origamisimulator.com.
+A simple HTML page that calls the FOLD API to add the faces_vertices properties. Useful for exporting a .fold file from software such as [Oriedita](https://github.com/oriedita/oriedita) to view on https://origamisimulator.org.
 To do this, there is a script to remove/exclude extra vertices, similar to the "Remove extra vertices" function from Oriedita.
 Also, the console will log which vertices in the fold fail Maekawa's theorem as a light flat-foldability check (Might add more in the future)
 
 ![Image](https://github.com/Googolplexic/.fold-file_face_converter/assets/52732344/73872b69-8562-4537-a082-58bd77d50c56)
-Vertex exclusion example with a crease pattern of a chess rook (See sample): before and after (the right is compatible with [origamisimulator.com](https://origamisimulator.com) while the left is not)
+Vertex exclusion example with a crease pattern of a chess rook (See sample): before and after (the right is compatible with [origamisimulator.org](https://origamisimulator.org) while the left is not)
 
 ## Acknowledgements
 
