@@ -31,7 +31,7 @@ function excludeVertex(fold, vertexToRemove, edge1, edge2) {
 
 /*  Assuming unrotated rectangle/square, check if a given vertex is a corner
     by checking the edge assignment and the vertex location */
-function isCorner(fold, targetVertex, edge1, edge2, elipson) {
+function isCorner(fold, targetVertex, edge1, edge2, epsilon) {
 
     // If the edges aren't assigned to be paper edges, return false
     if (!fold.edges_assignment[edge1] == 'B' || !fold.edges_assignment[edge2] == 'B') {
@@ -51,14 +51,14 @@ function isCorner(fold, targetVertex, edge1, edge2, elipson) {
     }
 
     // Check if vertex is corner
-    return (targetVertexX + elipson > maxValue[0] && targetVertexY + elipson > maxValue[1]
-        || targetVertexX + elipson > maxValue[0] && targetVertexY - elipson < minValue[1]
-        || targetVertexX - elipson < minValue[0] && targetVertexY + elipson > maxValue[1]
-        || targetVertexX - elipson < minValue[0] && targetVertexY - elipson < minValue[1]);
+    return (targetVertexX + epsilon > maxValue[0] && targetVertexY + epsilon > maxValue[1]
+        || targetVertexX + epsilon > maxValue[0] && targetVertexY - epsilon < minValue[1]
+        || targetVertexX - epsilon < minValue[0] && targetVertexY + epsilon > maxValue[1]
+        || targetVertexX - epsilon < minValue[0] && targetVertexY - epsilon < minValue[1]);
 }
 
 // Checks if the vertex is on the edge of the fold
-function isOnEdge(fold, targetVertex, elipson) {
+function isOnEdge(fold, targetVertex, epsilon) {
 
     // Find corner values
     const targetVertexX = fold.vertices_coords[targetVertex][0];
@@ -73,12 +73,12 @@ function isOnEdge(fold, targetVertex, elipson) {
     }
 
     // Check if vertex is on the edge
-    return (targetVertexX + elipson > maxValue[0] || targetVertexY + elipson > maxValue[1]
-        || targetVertexX - elipson < minValue[0] || targetVertexY - elipson < minValue[1]);
+    return (targetVertexX + epsilon > maxValue[0] || targetVertexY + epsilon > maxValue[1]
+        || targetVertexX - epsilon < minValue[0] || targetVertexY - epsilon < minValue[1]);
 }
 
 // Checks if the slope of the two given edges are the same
-function edgesNotParallel(fold, edge1, edge2, elipson) {
+function edgesNotParallel(fold, edge1, edge2, epsilon) {
     const XchangeInEdge1 = fold.vertices_coords[fold.edges_vertices[edge1][0]][0]
         - fold.vertices_coords[fold.edges_vertices[edge1][1]][0];
     const YchangeInEdge1 = fold.vertices_coords[fold.edges_vertices[edge1][0]][1]
@@ -87,7 +87,12 @@ function edgesNotParallel(fold, edge1, edge2, elipson) {
         - fold.vertices_coords[fold.edges_vertices[edge2][1]][0];
     const YchangeInEdge2 = fold.vertices_coords[fold.edges_vertices[edge2][0]][1]
         - fold.vertices_coords[fold.edges_vertices[edge2][1]][1];
-    return (Math.abs(YchangeInEdge1 / XchangeInEdge1 - YchangeInEdge2 / XchangeInEdge2) > elipson);
+
+    // First check if slopes are undefined
+    if (Math.abs(XchangeInEdge1) < epsilon || Math.abs(XchangeInEdge2) < epsilon) {
+        return Math.abs(XchangeInEdge1) > epsilon || Math.abs(XchangeInEdge2) > epsilon;
+    }
+    return (Math.abs(YchangeInEdge1 / XchangeInEdge1 - YchangeInEdge2 / XchangeInEdge2) > epsilon);
 }
 
 /*  Determines if a vertex should be removed based on if: 
