@@ -30,6 +30,8 @@ document.getElementById('fileInput').addEventListener('change', function (event)
                 downloadLink.textContent = 'Download Converted File';
                 downloadLink.click();  // Automatically click the link to start the download
 
+                setupViewerWithBlob(blob, newFileName);
+
             } catch (error) {
                 console.error('Error parsing JSON: ', error);
             }
@@ -38,3 +40,32 @@ document.getElementById('fileInput').addEventListener('change', function (event)
         reader.readAsText(file); // Read the file as text
     }
 });
+
+function setupViewerWithBlob(blob, exampleName) {
+    const viewerContainer = document.getElementById('view1');
+    FOLD = require('fold');
+    // Read the Blob as text
+    const reader = new FileReader();
+    reader.onload = function (event) {
+        const inputString = event.target.result;
+
+        // Define the options, including examples
+        const options = {
+            viewButtons: true,
+            axisButtons: true,
+            attrViewer: true,
+            examples: { exampleName: inputString },  // Initialize as an empty object
+            import: false,
+            export: true,
+            properties: true
+        };
+
+        // Add the example data to the examples object
+        // options.examples[exampleName] = inputString;
+
+        // Call the addViewer function with the container div and options
+        FOLD.viewer.addViewer(view1, options);
+    };
+
+    reader.readAsText(blob); // Read the Blob as text
+}
