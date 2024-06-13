@@ -59,7 +59,10 @@ function setupViewerWithBlob(blob, exampleName, url) {
         options.examples[exampleName] = url;
         // Call the addViewer function with the container div and options
         FOLD.viewer.addViewer(view1, options);
-        view1.getElementsByTagName("svg")[0].style.pointerEvents = "none";
+        svg = view1.getElementsByTagName("svg")[0];
+        svg.style.pointerEvents = "none";
+        svg.style["font-size"] = "0.04px";
+
     };
 
     reader.readAsText(blob); // Read the Blob as text
