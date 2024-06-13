@@ -51,20 +51,15 @@ function setupViewerWithBlob(blob, exampleName, url) {
 
         // Define the options, including examples
         const options = {
-            viewButtons: true,
-            axisButtons: false,
-            attrViewer: false,
             examples: {}, // Initialize as an empty object
             import: false,
-            export: true,
-            properties: false
         };
 
         // Add the example data to the examples object
-        const view = FOLD.viewer.addViewer(view1, options);
-
-        // Set vertices to be shown by default
-        view.cam.show.Vertices = true;
+        options.examples[exampleName] = url;
+        // Call the addViewer function with the container div and options
+        FOLD.viewer.addViewer(view1, options);
+        view1.getElementsByTagName("svg")[0].style.pointerEvents = "none";
     };
 
     reader.readAsText(blob); // Read the Blob as text
