@@ -30,7 +30,7 @@ document.getElementById('fileInput').addEventListener('change', function (event)
                 downloadLink.textContent = 'Download Converted File';
                 downloadLink.click();  // Automatically click the link to start the download
 
-                setupViewerWithBlob(blob, newFileName);
+                setupViewerWithBlob(blob, newFileName, url);
 
             } catch (error) {
                 console.error('Error parsing JSON: ', error);
@@ -41,8 +41,8 @@ document.getElementById('fileInput').addEventListener('change', function (event)
     }
 });
 
-function setupViewerWithBlob(blob, exampleName) {
-    const viewerContainer = document.getElementById('view1');
+function setupViewerWithBlob(blob, exampleName, url) {
+    const view1 = document.getElementById('view1');
     FOLD = require('fold');
     // Read the Blob as text
     const reader = new FileReader();
@@ -52,19 +52,19 @@ function setupViewerWithBlob(blob, exampleName) {
         // Define the options, including examples
         const options = {
             viewButtons: true,
-            axisButtons: true,
-            attrViewer: true,
-            examples: { exampleName: inputString },  // Initialize as an empty object
+            axisButtons: false,
+            attrViewer: false,
+            examples: {}, // Initialize as an empty object
             import: false,
             export: true,
-            properties: true
+            properties: false
         };
 
         // Add the example data to the examples object
-        // options.examples[exampleName] = inputString;
+        const view = FOLD.viewer.addViewer(view1, options);
 
-        // Call the addViewer function with the container div and options
-        FOLD.viewer.addViewer(view1, options);
+        // Set vertices to be shown by default
+        view.cam.show.Vertices = true;
     };
 
     reader.readAsText(blob); // Read the Blob as text
