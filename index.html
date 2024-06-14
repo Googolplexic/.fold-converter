@@ -14,7 +14,17 @@
     <p hidden id="data"></p>
     <script src="https://edemaine.github.io/fold/dist/fold.js"></script>
     <script src="exclusion.js"></script>
-    <script src="convert.js"></script>
+    <script src="convert.js">
+
+    </script>
+    <script>
+        FOLD = require('fold');
+        var count = 0;
+        document.getElementById('fileInput').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            convertInput(file);
+        });
+    </script>
     <h3>FOLD Viewer</h3>
     <div id='view1'></div>
 </body>
