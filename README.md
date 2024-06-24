@@ -1,6 +1,6 @@
 # .fold file face_vertices converter and vertex excluder
 
-[Try it out](https://googolplexic.github.io/.fold-file_face_converter/)
+[Try it out](https://googolplexic.github.io/.fold-converter/)
 
 ## Description
 
