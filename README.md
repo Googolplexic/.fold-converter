@@ -4,7 +4,7 @@
 
 ## Description
 
-A simple HTML page that calls the FOLD API to add the faces_vertices properties, displaying the results afterwards. Useful for exporting a .fold file from software such as [Oriedita](https://github.com/oriedita/oriedita) to view on https://origamisimulator.org.
+A simple HTML page that calls the FOLD API to add the faces_vertices property to a (2D) .fold file, displaying the results afterwards. Useful for exporting a .fold file from software such as [Oriedita](https://github.com/oriedita/oriedita) to view on https://origamisimulator.org.
 To do this, there is a script to remove/exclude extra vertices, similar to the "Remove extra vertices" function from Oriedita.
 Also, the console will log which vertices in the fold fail Maekawa's theorem as a light flat-foldability check (Might add more in the future)
 
